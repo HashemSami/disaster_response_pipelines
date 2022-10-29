@@ -4,6 +4,20 @@ import sys
 
 
 def load_data(messages_filepath, categories_filepath):
+    """
+    INPUT
+    messages_filepath - string
+    categories_filepath - string
+
+    OUTPUT
+    df - pandas dataframe
+
+    This function loads the data from file paths and
+    merge them in one dataframe using the following steps:
+    1. Load messages data
+    2. Load categories data
+    3. Merging data into one dataframe
+    """
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     df = messages.merge(categories, on="id")
@@ -12,6 +26,18 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+    """
+    INPUT
+    df - pandas dataframe
+
+    OUTPUT
+    df - pandas dataframe
+
+    This function will clean the dataframe using the following steps:
+    1. Create a column for each category with the correct value
+    2. Drop the Categories column
+    3. Drop duplicates from data
+    """
     categories = (
         pd.Series(df.iloc[0]["categories"])
         .str.split(";", expand=True)
@@ -44,6 +70,17 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
+    """
+    INPUT
+    df - pandas dataframe
+    database_filename - string
+
+    OUTPUT
+    void
+
+    This function will save the dataframe into SQL table called 'MESSAGES'
+    and save the database inside the current directory.
+    """
     engine = create_engine(f"sqlite:///{database_filename}")
     df.to_sql("MESSAGES", engine, if_exists="replace", index=False)
 

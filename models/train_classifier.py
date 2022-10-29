@@ -24,8 +24,19 @@ import xgboost as xgb
 
 
 def load_data(database_filepath):
+    """
+    INPUT
+    database_filepath - string
+
+    OUTPUT
+    X - data features / pandas dataframe
+    y - data targets / pandas dataframe
+    category_names - category names list
+
+    This function load messages data from database
+    and get X and Y data required for ML.
+    """
     engine = create_engine(f"sqlite:///{database_filepath}")
-    # df = pd.read_sql('SELECT * FROM MESSAGES', con = engine)
     df = pd.read_sql_table("MESSAGES", engine)
     X = df["message"]
     y = df[df.columns[4:]]
@@ -36,6 +47,21 @@ def load_data(database_filepath):
 
 
 def tokenize(text_raw):
+    """
+    INPUT
+    text_raw - string
+
+    OUTPUT
+    lemmatized_sentence - string list
+
+    This function will clean and tokenize the provided text
+    using the following steps:
+    1. Extract characters from string
+    2. Tokenize words
+    3. Create POS tag each token
+    4. Remove stop words
+    """
+    # Extract characters from string
     text = re.sub(r"[^a-zA-Z0-9]", " ", text_raw.lower())
     lemmatizer = WordNetLemmatizer()
     stop_words = stopwords.words("english")
@@ -60,6 +86,7 @@ def tokenize(text_raw):
 
     lemmatized_sentence = []
     for word, tag in wordnet_tagged:
+        # Remove stop words
         if word not in stop_words:
             if tag is None:
                 # if there is no available tag, append the token as is
@@ -72,6 +99,15 @@ def tokenize(text_raw):
 
 
 def build_model():
+    """
+    INPUT
+    none
+
+    OUTPUT
+    pipeline - Pipeline object
+
+    This function will create ML pipeline to extract features and feed the model
+    """
     xgboost = xgb.XGBClassifier(
         tree_method="hist", eval_metric="mlogloss", use_label_encoder=False
     )
@@ -102,6 +138,18 @@ def build_model():
 
 
 def evaluate_model(model, X_test, y_test, category_names):
+    """
+    INPUT
+    model - model object
+    X_test - pandas dataframe
+    y_test - pandas dataframe
+    category_names - string list
+
+    OUTPUT
+    void
+
+    This function will print the model score after predicting the test data.
+    """
 
     y_pred = model.predict(X_test)
 
@@ -115,6 +163,16 @@ def evaluate_model(model, X_test, y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    """
+    INPUT
+    model - model object
+    model_filepath - string
+
+    OUTPUT
+    void
+
+    This function will save the model to a pickle file in the current directory
+    """
     pickle.dump(model, open(model_filepath, "wb"))
 
 

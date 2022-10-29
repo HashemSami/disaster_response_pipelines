@@ -2,7 +2,7 @@
 
 ### Generel info:
 
-This project for the Udacity's Data Scientist Nanodegree. to analyze disaster data from Appen (formally Figure 8) to build a model for an API that classifies disaster messages. The data set containing real messages that were sent during disaster events, and this project will create a machine learning pipeline to categorize these events so that you can send the messages to an appropriate disaster relief agency.
+This project for the Udacity's Data Scientist Nanodegree. to analyze disaster data from [Appen](https://appen.com/) (formally Figure 8) to build a model for an API that classifies disaster messages. The data set containing real messages that were sent during disaster events, and this project will create a machine learning pipeline to categorize these events so that you can send the messages to an appropriate disaster relief agency.
 The project will also include a web app where an emergency worker can input a new message and get classification results in several categories. The web app will also display visualizations of the data.
 
 ### Instructions:

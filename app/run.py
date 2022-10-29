@@ -22,6 +22,20 @@ app = Flask(__name__)
 
 
 def tokenize(text):
+    """
+    INPUT
+    text_raw - string
+
+    OUTPUT
+    lemmatized_sentence - string list
+
+    This function will clean and tokenize the provided text
+    using the following steps:
+    1. Extract characters from string
+    2. Tokenize words
+    3. Create POS tag each token
+    4. Remove stop words
+    """
     lemmatizer = WordNetLemmatizer()
 
     def pos_tagger(nltk_tag):
