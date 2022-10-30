@@ -7,7 +7,7 @@ The project will also include a web app where an emergency worker can input a ne
 
 ### Instructions:
 
-1. To install the required libraries you will need to execute the command in the project's root directory:
+1. To install the required libraries you will need to execute this command in the project's root directory:
 
 ```
 pip install -r requirements.txt

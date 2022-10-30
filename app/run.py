@@ -117,7 +117,7 @@ def index():
 @app.route("/go")
 def go():
     # save user input in query
-    query = " ".join(tokenize(request.args.get("query", "")))
+    query = request.args.get("query", "")
 
     print(query)
 

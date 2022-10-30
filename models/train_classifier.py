@@ -19,6 +19,8 @@ from sklearn.multioutput import MultiOutputClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV
+
 
 import xgboost as xgb
 
@@ -134,7 +136,19 @@ def build_model():
         ]
     )
 
-    return pipeline
+    # specify parameters for grid search
+    parameters = {
+        'features__text_pipeline__vect__ngram_range': ((1, 1), (1, 2)),
+        'clf__estimator__n_estimators': [50, 100, 200],
+        # 'subsample': [0.6, 0.8, 1.0],
+        'clf__estimator__gamma': [0.5, 1, 1.5, 2],
+        # 'max_depth': [3, 4, 5]
+    }
+
+    # create grid search object
+    cv = GridSearchCV(pipeline, parameters)
+
+    return cv
 
 
 def evaluate_model(model, X_test, y_test, category_names):
@@ -152,6 +166,8 @@ def evaluate_model(model, X_test, y_test, category_names):
     """
 
     y_pred = model.predict(X_test)
+
+    print("\nBest Parameters:", model.best_params_)
 
     print(
         classification_report(
